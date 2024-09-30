@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.nfccard">
+
+    <!-- Разрешения, необходимые для работы приложения -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Разрешения для работы с камерой, если планируется фотографирование -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Декларация использования NFC -->
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <!-- Поддержка минимальной и целевой версии SDK -->
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="33" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NFCCard">
+
+        <!-- Главная активити приложения -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <!-- Интент-фильтр для запуска приложения -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Если используете WorkManager или другие службы, их необходимо объявить здесь -->
+        <!--
+        <service
+            android:name=".YourService"
+            android:exported="false" />
+        -->
+    </application>
+
+</manifest>
