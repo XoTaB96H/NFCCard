@@ -1,70 +1,146 @@
 package com.example.nfccard.ui.main
 
+//noinspection UsingMaterialAndMaterial3Libraries
+
+
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.nfccard.model.PassEventType
 import com.example.nfccard.viewmodel.MainViewModel
 
+
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainViewModel = MainViewModel()) {
+fun MainScreen(navController: NavController, viewModel: MainViewModel = viewModel()) {
     val user by viewModel.user.collectAsState()
     val passHistory by viewModel.passHistory.collectAsState(initial = emptyList())
+    var isNfcEnabled by remember { mutableStateOf(viewModel.isNfcEnabled()) }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    LaunchedEffect(Unit) {
+        isNfcEnabled = viewModel.isNfcEnabled()
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Главная") })
+        }
     ) {
-        // Отображение фотографии пользователя
-        user?.photoUri?.let { uri ->
-            Image(
-                painter = painterResource(id = /* заменить на загрузку из URI */ 0),
-                contentDescription = "User Photo",
-                modifier = Modifier.size(100.dp)
-            )
-        }
-        Text(text = "${user?.name} ${user?.surname}")
-        // Отображение карты-пропуска
-        Card(
+        Column(
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-                .height(200.dp)
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Дизайн карты
-        }
-        // Проверка NFC
-        if (!viewModel.isNfcEnabled()) {
-            // Отобразить сообщение и кнопку для включения NFC
-            Button(onClick = { viewModel.enableNfc() }) {
-                Text("Включить NFC")
+            // Фотография пользователя
+            user?.photoUri?.let { uri ->
+                Image(
+                    painter = rememberImagePainter(data = uri),
+                    contentDescription = "User Photo",
+                    modifier = Modifier.size(100.dp),
+                    contentScale = ContentScale.Crop
+                )
             }
-        }
-        // Отображение истории проходов
-        LazyColumn {
-            items(passHistory) { event ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Имя и фамилия
+            Text(
+                text = "${user?.name ?: ""} ${user?.surname ?: ""}",
+                style = MaterialTheme.typography.h6
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Карта-пропуск
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp),
+                elevation = 4.dp
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(MaterialTheme.colors.primary, MaterialTheme.colors.primaryVariant)
+                            )
+                        )
                 ) {
-                    Text(text = /* форматировать дату и время */ "")
-                    Icon(
-                        painter = painterResource(id = if (event.eventType == PassEventType.ENTRY) R.drawable.ic_entry else R.drawable.ic_exit),
-                        contentDescription = null
+                    Text(
+                        text = "Ваш пропуск",
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                        style = MaterialTheme.typography.h5,
+                        color = MaterialTheme.colors.onPrimary
                     )
                 }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Проверка NFC
+            if (!isNfcEnabled) {
+                Text(text = "NFC отключен", color = Color.Red)
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = {
+                    navController.context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
+                }) {
+                    Text("Включить NFC")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // История проходов
+            Text(text = "История проходов", style = MaterialTheme.typography.h6)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (passHistory.isNotEmpty()) {
+                LazyColumn {
+                    items(passHistory) { event ->
+                        PassEventItem(event)
+                    }
+                }
+            } else {
+                Text(text = "История пуста")
             }
         }
     }
 }
+
+@Composable
+fun PassEventItem(event: PassEvent) {
+    val dateTime = java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format(event.timestamp)
+    val eventIcon = if (event.eventType == PassEventType.ENTRY) {
+        Icons.Default.ArrowUpward
+    } else {
+        Icons.Default.ArrowDownward
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = dateTime)
+        Icon(imageVector = eventIcon, contentDescription = null)
+    }
+}
+

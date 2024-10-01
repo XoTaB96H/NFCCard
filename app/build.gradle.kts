@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    kotlin("plugin.serialization") version "1.5.31"
+
 }
 
 android {
@@ -61,7 +63,21 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.material)
+    //noinspection GradleDependency
+    implementation(libs.androidx.compiler)
+    //noinspection GradleDependency
+    implementation(libs.ui)
+    //noinspection GradleDependency
+    implementation(libs.ui.tooling)
+    //noinspection GradleDependency
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.material.icons.extended)
     testImplementation(libs.junit)
+    implementation(libs.material3)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

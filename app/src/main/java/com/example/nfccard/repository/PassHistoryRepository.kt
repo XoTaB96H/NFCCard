@@ -5,10 +5,11 @@ import com.example.nfccard.data.DataStoreManager
 import com.example.nfccard.model.PassEvent
 import kotlinx.coroutines.flow.Flow
 
+class PassHistoryRepository(context: Context) {
 
-class PassHistoryRepository(private val dataStore: DataStoreManager = DataStoreManager()) {
+    private val dataStore = DataStoreManager(context)
 
-    fun addPassEvent(event: PassEvent) {
+    suspend fun addPassEvent(event: PassEvent) {
         dataStore.addPassEvent(event)
     }
 

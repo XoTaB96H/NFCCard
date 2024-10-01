@@ -5,6 +5,7 @@ import android.content.Intent
 import android.provider.Settings
 import android.nfc.NfcAdapter
 
+
 object NFCUtil {
 
     fun isNfcEnabled(context: Context): Boolean {
@@ -13,7 +14,9 @@ object NFCUtil {
     }
 
     fun enableNfc(context: Context) {
-        context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
+        context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        })
     }
 
     fun generateUniqueNfcId(): String {

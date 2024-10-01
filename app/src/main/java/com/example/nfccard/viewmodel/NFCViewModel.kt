@@ -4,11 +4,12 @@ import android.content.Context
 import com.example.nfccard.nfc.NFCUtil
 import com.example.nfccard.repository.UserRepository
 import com.example.nfccard.util.EncryptionUtil
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
-class NFCViewModel(
-    private val context: Context,
-    private val userRepository: UserRepository = UserRepository()
-) {
+class NFCViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val userRepository = UserRepository(application)
 
     fun generateNfcId() {
         val nfcId = NFCUtil.generateUniqueNfcId()
@@ -22,10 +23,10 @@ class NFCViewModel(
     }
 
     fun checkNfcEnabled(): Boolean {
-        return NFCUtil.isNfcEnabled(context)
+        return NFCUtil.isNfcEnabled(getApplication())
     }
 
     fun enableNfc() {
-        NFCUtil.enableNfc(context)
+        NFCUtil.enableNfc(getApplication())
     }
 }

@@ -4,30 +4,31 @@ import android.content.Context
 import com.example.nfccard.data.DataStoreManager
 import com.example.nfccard.model.User
 
+class UserRepository(context: Context) {
 
-class UserRepository(private val dataStore: DataStoreManager = DataStoreManager()) {
+    private val dataStore = DataStoreManager(context)
 
-    fun savePinCode(pin: String) {
-        dataStore.saveString("pin_code", pin)
+    suspend fun savePinCode(pin: String) {
+        dataStore.savePinCode(pin)
     }
 
-    fun getPinCode(): String? {
-        return dataStore.getString("pin_code")
+    suspend fun getPinCode(): String? {
+        return dataStore.getPinCode()
     }
 
-    fun saveUser(user: User) {
+    suspend fun saveUser(user: User) {
         dataStore.saveUser(user)
     }
 
-    fun getUser(): User? {
+    suspend fun getUser(): User? {
         return dataStore.getUser()
     }
 
-    fun saveNfcId(nfcId: String) {
-        dataStore.saveString("nfc_id", nfcId)
+    suspend fun saveNfcId(nfcId: String) {
+        dataStore.saveNfcId(nfcId)
     }
 
-    fun getNfcId(): String? {
-        return dataStore.getString("nfc_id")
+    suspend fun getNfcId(): String? {
+        return dataStore.getNfcId()
     }
 }

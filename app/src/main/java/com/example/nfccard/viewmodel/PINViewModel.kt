@@ -3,14 +3,24 @@ package com.example.nfccard.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.nfccard.repository.UserRepository
 
-class PINViewModel(private val userRepository: UserRepository = UserRepository()) : ViewModel() {
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
+
+class PINViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val userRepository = UserRepository(application)
 
     fun setPinCode(pin: String) {
-        userRepository.savePinCode(pin)
+        viewModelScope.launch {
+            userRepository.savePinCode(pin)
+        }
     }
 
-    fun verifyPinCode(pin: String): Boolean {
+    suspend fun verifyPinCode(pin: String): Boolean {
         val savedPin = userRepository.getPinCode()
         return savedPin == pin
     }
 }
+

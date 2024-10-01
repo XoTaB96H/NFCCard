@@ -9,12 +9,15 @@ import com.example.nfccard.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
-class MainViewModel(
-    private val userRepository: UserRepository = UserRepository(),
-    private val passHistoryRepository: PassHistoryRepository = PassHistoryRepository(),
-    private val nfcViewModel: NFCViewModel = NFCViewModel()
-) : ViewModel() {
+
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val userRepository = UserRepository(application)
+    private val passHistoryRepository = PassHistoryRepository(application)
+    private val nfcViewModel = NFCViewModel(application)
 
     private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> get() = _user

@@ -3,8 +3,13 @@ package com.example.nfccard.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.nfccard.model.User
 import com.example.nfccard.repository.UserRepository
+import androidx.lifecycle.AndroidViewModel
+import android.app.Application
 
-class UserViewModel(private val userRepository: UserRepository = UserRepository()) : ViewModel() {
+
+class UserViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val userRepository = UserRepository(application)
 
     fun setUserPhoto(uri: String) {
         val user = userRepository.getUser() ?: User()
