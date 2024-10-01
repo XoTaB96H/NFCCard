@@ -1,5 +1,6 @@
 package com.example.nfccard.ui.pin
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material3.Text
@@ -28,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backspace
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PINSetupScreen(navController: NavController, viewModel: PINViewModel = viewModel()) {
     val scope = rememberCoroutineScope()
@@ -117,7 +119,7 @@ fun PINSetupScreen(navController: NavController, viewModel: PINViewModel = viewM
 }
 
 @Composable
-fun PinCodeDots(pinLength: Int) {
+private fun PinCodeDots(pinLength: Int) {
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()

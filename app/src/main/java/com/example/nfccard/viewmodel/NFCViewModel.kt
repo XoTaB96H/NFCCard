@@ -11,13 +11,13 @@ class NFCViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userRepository = UserRepository(application)
 
-    fun generateNfcId() {
+    suspend fun generateNfcId() {
         val nfcId = NFCUtil.generateUniqueNfcId()
         val encryptedId = EncryptionUtil.encrypt(nfcId)
         userRepository.saveNfcId(encryptedId)
     }
 
-    fun getNfcId(): String? {
+    suspend fun getNfcId(): String? {
         val encryptedId = userRepository.getNfcId()
         return encryptedId?.let { EncryptionUtil.decrypt(it) }
     }

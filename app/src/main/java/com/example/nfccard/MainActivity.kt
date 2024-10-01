@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.nfccard.navigation.Navigation
-//import com.example.nfccard.ui.theme.AppTheme
+import com.example.nfccard.ui.theme.AppTheme
 
 
     class MainActivity : ComponentActivity() {
@@ -17,4 +17,3 @@ import com.example.nfccard.navigation.Navigation
             }
         }
     }
-}

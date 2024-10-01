@@ -1,5 +1,6 @@
 package com.example.nfccard.ui.pin
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.*
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.material.Scaffold
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun PINLoginScreen(navController: NavController, viewModel: PINViewModel = viewModel()) {
     val scope = rememberCoroutineScope()
@@ -93,7 +95,7 @@ fun PINLoginScreen(navController: NavController, viewModel: PINViewModel = viewM
 }
 
 @Composable
-fun PinCodeDots(pinLength: Int) {
+private fun PinCodeDots(pinLength: Int) {
     Row(horizontalArrangement = Arrangement.Center) {
         repeat(4) { index ->
             val filled = index < pinLength

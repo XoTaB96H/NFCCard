@@ -11,13 +11,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userRepository = UserRepository(application)
 
-    fun setUserPhoto(uri: String) {
+    suspend fun setUserPhoto(uri: String) {
         val user = userRepository.getUser() ?: User()
         user.photoUri = uri
         userRepository.saveUser(user)
     }
 
-    fun setUserName(name: String, surname: String) {
+    suspend fun setUserName(name: String, surname: String) {
         val user = userRepository.getUser() ?: User()
         user.name = name
         user.surname = surname
