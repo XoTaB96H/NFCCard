@@ -3,6 +3,7 @@ package com.example.nfccard.data
 import android.content.Context
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.nfccard.data.AppDataStore.dataStore
 import com.example.nfccard.model.PassEvent
 import com.example.nfccard.model.User
 import kotlinx.coroutines.flow.Flow
@@ -12,20 +13,35 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class DataStoreManager(private val context: Context) {
 
-    // Определение DataStore
-    private val Context.dataStore by preferencesDataStore(name = "app_preferences")
+class DataStoreManager private constructor(private val context: Context) {
 
-    // Определение ключей
+    private val dataStore = context.dataStore
+
+    // Остальной код
+
     companion object {
+        @Volatile
+        private var INSTANCE: DataStoreManager? = null
+
+        fun getInstance(context: Context): DataStoreManager {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: DataStoreManager(context.applicationContext).also { INSTANCE = it }
+            }
+        }
+
+        // Определение ключей
         val PIN_CODE_KEY = stringPreferencesKey("pin_code")
         val NFC_ID_KEY = stringPreferencesKey("nfc_id")
         val USER_KEY = stringPreferencesKey("user")
         val PASS_HISTORY_KEY = stringPreferencesKey("pass_history")
     }
 
+
+
     private val json = Json { ignoreUnknownKeys = true }
+
+
 
     // Сохранение строки
     suspend fun saveString(key: Preferences.Key<String>, value: String) {

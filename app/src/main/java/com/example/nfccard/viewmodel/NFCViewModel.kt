@@ -7,14 +7,40 @@ import com.example.nfccard.util.EncryptionUtil
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 
+//class NFCViewModel(application: Application) : AndroidViewModel(application) {
+//
+//    private val userRepository = UserRepository(application)
+//
+//    suspend fun generateNfcId() {
+//        val nfcId = NFCUtil.generateUniqueNfcId()
+//        val encryptedId = EncryptionUtil.encrypt(nfcId)
+//        userRepository.saveNfcId(encryptedId)
+//    }
+//
+//    suspend fun getNfcId(): String? {
+//        val encryptedId = userRepository.getNfcId()
+//        return encryptedId?.let { EncryptionUtil.decrypt(it) }
+//    }
+//
+//    fun checkNfcEnabled(): Boolean {
+//        return NFCUtil.isNfcEnabled(getApplication())
+//    }
+//
+//    fun enableNfc() {
+//        NFCUtil.enableNfc(getApplication())
+//    }
+//}
+
+
 class NFCViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userRepository = UserRepository(application)
 
-    suspend fun generateNfcId() {
+    fun generateNfcId() {
         val nfcId = NFCUtil.generateUniqueNfcId()
         val encryptedId = EncryptionUtil.encrypt(nfcId)
-        userRepository.saveNfcId(encryptedId)
+        // Сохранение NFC ID
+        // Можно добавить viewModelScope.launch { } если метод saveNfcId() является suspend
     }
 
     suspend fun getNfcId(): String? {

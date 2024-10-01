@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 
 class PassHistoryRepository(context: Context) {
 
-    private val dataStore = DataStoreManager(context)
+    private val dataStoreManager = DataStoreManager.getInstance(context)
 
     suspend fun addPassEvent(event: PassEvent) {
-        dataStore.addPassEvent(event)
+        dataStoreManager.addPassEvent(event)
     }
 
     fun getPassHistoryFlow(): Flow<List<PassEvent>> {
-        return dataStore.getPassHistory()
+        return dataStoreManager.getPassHistory()
     }
 }

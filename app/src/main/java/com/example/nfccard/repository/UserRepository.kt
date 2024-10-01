@@ -4,31 +4,32 @@ import android.content.Context
 import com.example.nfccard.data.DataStoreManager
 import com.example.nfccard.model.User
 
+
 class UserRepository(context: Context) {
 
-    private val dataStore = DataStoreManager(context)
+    private val dataStoreManager = DataStoreManager.getInstance(context)
 
     suspend fun savePinCode(pin: String) {
-        dataStore.savePinCode(pin)
+        dataStoreManager.savePinCode(pin)
     }
 
     suspend fun getPinCode(): String? {
-        return dataStore.getPinCode()
+        return dataStoreManager.getPinCode()
     }
 
     suspend fun saveUser(user: User) {
-        dataStore.saveUser(user)
+        dataStoreManager.saveUser(user)
     }
 
     suspend fun getUser(): User? {
-        return dataStore.getUser()
+        return dataStoreManager.getUser()
     }
 
     suspend fun saveNfcId(nfcId: String) {
-        dataStore.saveNfcId(nfcId)
+        dataStoreManager.saveNfcId(nfcId)
     }
 
     suspend fun getNfcId(): String? {
-        return dataStore.getNfcId()
+        return dataStoreManager.getNfcId()
     }
 }
