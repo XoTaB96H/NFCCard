@@ -85,10 +85,11 @@ fun PINSetupScreen(navController: NavController, viewModel: PINViewModel = viewM
                         if (pin == confirmPin) {
                             scope.launch {
                                 viewModel.setPinCode(pin)
-                                navController.navigate("userPhoto") {
+                                navController.navigate("userInfo") {
                                     popUpTo("pinSetup") { inclusive = true }
                                 }
                             }
+
                         } else {
                             errorMessage = "PIN-коды не совпадают"
                             pin = ""

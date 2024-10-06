@@ -3,6 +3,7 @@ package com.example.nfccard.ui.main
 //noinspection UsingMaterialAndMaterial3Libraries
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.Image
@@ -30,6 +31,7 @@ import com.example.nfccard.model.PassEventType
 import com.example.nfccard.viewmodel.MainViewModel
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel = viewModel()) {
     val user by viewModel.user.collectAsState()

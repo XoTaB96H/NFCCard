@@ -34,6 +34,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
     fun isNfcEnabled(): Boolean {
         return nfcViewModel.checkNfcEnabled()
     }

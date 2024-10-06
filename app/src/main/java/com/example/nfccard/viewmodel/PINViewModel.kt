@@ -22,5 +22,10 @@ class PINViewModel(application: Application) : AndroidViewModel(application) {
         val savedPin = userRepository.getPinCode()
         return savedPin == pin
     }
+
+    suspend fun isPinSet(): Boolean {
+        val pin = userRepository.getPinCode()
+        return !pin.isNullOrEmpty()
+    }
 }
 

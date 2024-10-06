@@ -33,14 +33,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userRepository = UserRepository(application)
 
-    fun setUserPhoto(uri: String) {
-        viewModelScope.launch {
-            val user = userRepository.getUser() ?: User()
-            user.photoUri = uri
-            userRepository.saveUser(user)
-        }
-    }
-
     fun setUserName(name: String, surname: String) {
         viewModelScope.launch {
             val user = userRepository.getUser() ?: User()
@@ -49,4 +41,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             userRepository.saveUser(user)
         }
     }
+
+    fun setUserPhoto(uri: String) {
+        viewModelScope.launch {
+            val user = userRepository.getUser() ?: User()
+            user.photoUri = uri
+            userRepository.saveUser(user)
+        }
+    }
 }
+

@@ -1,6 +1,8 @@
 package com.example.nfccard.ui.user
 
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,20 +15,26 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.nfccard.viewmodel.NFCViewModel
 import com.example.nfccard.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.Image
 
 
 @Composable
-fun UserPhotoScreen(navController: NavController, viewModel: UserViewModel = viewModel()) {
+fun UserPhotoScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
     var imageUri by remember { mutableStateOf<Uri?>(null) }
 
-    // Лаунчер для выбора изображения из галереи
+    // Инициализация ViewModel-ов
+    val userViewModel: UserViewModel = viewModel()
+    val nfcViewModel: NFCViewModel = viewModel()
+
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         imageUri = uri
     }
@@ -78,7 +86,9 @@ fun UserPhotoScreen(navController: NavController, viewModel: UserViewModel = vie
                 onClick = {
                     if (imageUri != null) {
                         scope.launch {
-                            viewModel.setUserPhoto(imageUri.toString())
+                            userViewModel.setUserPhoto(imageUri.toString())
+                            // Генерация NFC-идентификатора
+                            nfcViewModel.generateNfcId()
                             navController.navigate("mainScreen") {
                                 popUpTo("userPhoto") { inclusive = true }
                             }
@@ -92,4 +102,3 @@ fun UserPhotoScreen(navController: NavController, viewModel: UserViewModel = vie
         }
     }
 }
-

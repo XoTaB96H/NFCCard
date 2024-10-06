@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.ui.tooling)
     //noinspection GradleDependency
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.coil.compose)
     implementation(libs.androidx.material.icons.extended)
     testImplementation(libs.junit)

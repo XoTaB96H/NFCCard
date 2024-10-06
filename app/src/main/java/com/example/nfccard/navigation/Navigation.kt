@@ -9,22 +9,30 @@ import com.example.nfccard.ui.main.MainScreen
 import com.example.nfccard.ui.pin.PINLoginScreen
 import com.example.nfccard.ui.pin.PINSetupScreen
 import com.example.nfccard.ui.user.UserPhotoScreen
+import com.example.nfccard.ui.user.UserInfoScreen
+import com.example.nfccard.ui.splash.SplashScreen
 
 @Composable
-fun Navigation() {
+fun Navigation(startDestination: String) {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = "pinSetup") {
+    NavHost(navController, startDestination = "splashScreen") {
+        composable("splashScreen") {
+            SplashScreen(navController)
+        }
         composable("pinSetup") {
             PINSetupScreen(navController)
         }
         composable("pinLogin") {
             PINLoginScreen(navController)
         }
-        composable("mainScreen") {
-            MainScreen(navController)
+        composable("userInfo") {
+            UserInfoScreen(navController)
         }
         composable("userPhoto") {
             UserPhotoScreen(navController)
+        }
+        composable("mainScreen") {
+            MainScreen(navController)
         }
     }
 }

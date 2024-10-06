@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    var name: String = "LOx",
-    var surname: String = "Loxich",
+    var name: String = "",
+    var surname: String = "",
     var photoUri: String = "",
     var nfcId: String = ""
 )

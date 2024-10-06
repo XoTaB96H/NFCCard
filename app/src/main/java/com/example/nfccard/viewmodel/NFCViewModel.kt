@@ -6,6 +6,9 @@ import com.example.nfccard.repository.UserRepository
 import com.example.nfccard.util.EncryptionUtil
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.nfccard.model.User
+import kotlinx.coroutines.launch
 
 //class NFCViewModel(application: Application) : AndroidViewModel(application) {
 //
@@ -32,16 +35,23 @@ import androidx.lifecycle.AndroidViewModel
 //}
 
 
+
 class NFCViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userRepository = UserRepository(application)
 
     fun generateNfcId() {
-        val nfcId = NFCUtil.generateUniqueNfcId()
-        val encryptedId = EncryptionUtil.encrypt(nfcId)
-        // Сохранение NFC ID
-        // Можно добавить viewModelScope.launch { } если метод saveNfcId() является suspend
+        viewModelScope.launch {
+            val nfcId = NFCUtil.generateUniqueNfcId()
+            val encryptedId = EncryptionUtil.encrypt(nfcId)
+            userRepository.saveNfcId(encryptedId)
+            // Сохранение NFC ID в объекте пользователя
+            val user = userRepository.getUser() ?: return@launch
+            user.nfcId = encryptedId
+            userRepository.saveUser(user)
+        }
     }
+
 
     suspend fun getNfcId(): String? {
         val encryptedId = userRepository.getNfcId()
