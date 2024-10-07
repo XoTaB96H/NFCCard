@@ -158,7 +158,7 @@ fun NumericKeyboard(onNumberClick: (String) -> Unit, onDeleteClick: () -> Unit) 
             ) {
                 row.forEach { label ->
                     when (label) {
-                        "" -> Spacer(modifier = Modifier.size(64.dp))
+                        "" -> Spacer(modifier = Modifier.size(48.dp))
                         "←" -> {
                             IconButton(onClick = onDeleteClick) {
                                 Icon(
